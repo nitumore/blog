@@ -29,12 +29,25 @@ class PostsController < ApplicationController
 
   		#@posts = Post.all
 
+			
+
   		if params[:search]
-	      @posts = Post.find(:all, :conditions => ["title LIKE ?", "%#{params[:search]}%"])
+	      @posts = Post.find(:all, :conditions => ["title LIKE ? or text LIKE ?", "%#{params[:search]}%", "%#{params[:search]}%" ])
+	     #flash.now[:success] =  @posts.first.comments.first.commenter
+
+	      coll = @posts.first.comments
+	     
+	     message = ""
+	     coll.each do |c|
+  			message = message +   "#{c.inspect}" 
+		 end
+		 	flash.now[:success] = message
+
 	    else
 	      @posts = Post.find(:all)
 	    end
 	 
+
 	end
 
 
